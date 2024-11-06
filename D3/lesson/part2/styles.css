@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#main-header {
+    background-color: #332;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.highlight {
+    color: teal;
+    background-color: #101010;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+[data-action="submit"] {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

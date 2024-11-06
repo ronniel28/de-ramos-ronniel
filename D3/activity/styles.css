@@ -1,0 +1,317 @@
+/* Existing CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #fff;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f0a500;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.icons span {
+    font-size: 20px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.hero, .about-us {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content, .about-us-content {
+    max-width: 50%;
+
+    .order-now {
+        margin-left: 20px;
+    }
+}
+
+.hero-content h1, .about-us-content h1 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero-content h1 span, .about-us-content h1 span{
+    color: #f0a500;
+}
+
+.hero-content p, .about-us-content p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+    padding-left: 20px;
+}
+
+.order-now {
+    padding: 10px 20px;
+    background-color: #f0a500;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.hero-image {
+    max-width: 50%;
+}
+
+.hero-image img {
+    width: 100%;
+    object-fit: contain;
+}
+
+/* Gallery Section */
+#gallery {
+    padding: 50px;
+    text-align: center;
+    background-color: #fff;
+}
+
+#gallery h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+#gallery h2 span {
+    color: #f0a500; /* Accent color for the word "Gallery" */
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gallery-item img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05); /* Scale up image slightly on hover */
+}
+
+/* Menu Section */
+#menu {
+    padding: 50px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+#menu h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+#menu h2 span {
+    color: #f0a500; /* Accent color for "Menu" */
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.menu-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.menu-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.menu-item h3 {
+    font-size: 22px;
+    margin: 15px 0;
+    color: #f0a500;
+}
+
+.menu-item p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.menu-item .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.menu-item .rating {
+    color: #f0a500;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.menu-item .order-now {
+    background-color: #666;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item .order-now:hover {
+    background-color: #cc8400;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+}
+
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    /* Stack header elements vertically on small screens */
+    header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+    }
+
+    .icons {
+        margin-top: 10px;
+    }
+
+    /* Make hero section single-column */
+    .hero, .about-us {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .hero-content, .hero-image, .about-us-content {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    /* Adjust font sizes */
+    .hero-content h1, .about-us-content h1 {
+        font-size: 36px;
+    }
+
+    .hero-content p, .about-us-content p {
+        font-size: 16px;
+    }
+
+    .order-now {
+        font-size: 16px;
+        padding: 10px 15px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+
+}
+
+@media (max-width: 480px) {
+    /* Further adjust font sizes and spacing on very small screens */
+    .hero-content h1, .about-us-content h1 {
+        font-size: 28px;
+    }
+
+    .hero-content p, .about-us-content p {
+        font-size: 14px;
+    }
+
+    .order-now {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .hero, .about-us {
+        padding: 10px;
+    }
+
+    header {
+        padding: 10px;
+    }
+
+    .about-us-content{
+        order: -1;
+    }
+    .gallery-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+
+}
