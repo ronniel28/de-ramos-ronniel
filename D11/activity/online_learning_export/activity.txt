@@ -1,0 +1,340 @@
+Query 1: Retrieve all courses in the "Programming" category
+online_learning.courses.aggregate([
+  {
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryDetails"
+    }
+  },
+  { $unwind: "$categoryDetails" },
+  { $match: { "categoryDetails.name": "Programming" } },
+  { $project: { title: 1, category: "$categoryDetails.name" } }
+]);
+
+Result:
+[
+  {
+        "_id": {
+        "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "title": "Introduction to MongoDB",
+        "category": "Programming"
+    }
+]
+
+
+Query 2: Retrieve all students enrolled in "Introduction to MongoDB"
+JavaScript Query:
+online_learning.courses.aggregate([
+  { $match: { title: "Introduction to MongoDB" } },
+  {
+    $lookup: {
+      from: "students",
+      localField: "students",
+      foreignField: "_id",
+      as: "enrolledStudents"
+    }
+  },
+  { $project: { title: 1, "enrolledStudents.name": 1, "enrolledStudents.email": 1 } }
+]);
+
+Result:
+[
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "title": "Introduction to MongoDB",
+        "enrolledStudents": [
+            {
+            "name": "Bob Brown",
+            "email": "bob.b@example.com"
+            },
+            {
+            "name": "Alice Johnson",
+            "email": "alice.j@example.com"
+            }
+        ]
+    }
+]
+
+Query 3: Retrieve course details, including category and instructor information, for all courses
+JavaScript Query:
+online_learning.courses.aggregate([
+  {
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryDetails"
+    }
+  },
+  {
+    $lookup: {
+      from: "instructors",
+      localField: "instructor",
+      foreignField: "_id",
+      as: "instructorDetails"
+    }
+  },
+  { $unwind: "$categoryDetails" },
+  { $unwind: "$instructorDetails" },
+  {
+    $project: {
+      title: 1,
+      description: 1,
+      category: "$categoryDetails.name",
+      instructor: "$instructorDetails.name"
+    }
+  }
+]);
+
+Result:
+[
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "title": "Introduction to MongoDB",
+        "description": "Learn the basics of MongoDB.",
+        "category": "Programming",
+        "instructor": "John Smith"
+    },
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b41"
+        },
+        "title": "Data Science with Python",
+        "description": "A comprehensive guide to data science using Python.",
+        "category": "Data Science",
+        "instructor": "Jane Doe"
+    }
+]
+
+Query 4: Retrieve all reviews for the course "Data Science with Python," including the details of the students who wrote them
+JavaScript Query:
+online_learning.courses.aggregate([
+  { $match: { title: "Data Science with Python" } },
+  { $unwind: "$reviews" },
+  {
+    $lookup: {
+      from: "students",
+      localField: "reviews.student",
+      foreignField: "_id",
+      as: "reviewerDetails"
+    }
+  },
+  { $unwind: "$reviewerDetails" },
+  {
+    $project: {
+      "reviews.rating": 1,
+      "reviews.comment": 1,
+      "reviewerDetails.name": 1,
+      "reviewerDetails.email": 1
+    }
+  }
+]);
+
+Result:
+[
+   {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b41"
+        },
+        "reviews": {
+            "rating": 4,
+            "comment": "Good introduction."
+        },
+        "reviewerDetails": {
+            "name": "Charlie White",
+            "email": "charlie.w@example.com"
+        }
+    }
+]
+
+Query 5: Find the average rating for each course
+JavaScript Query:
+online_learning.courses.aggregate([
+  { $unwind: "$reviews" },
+  {
+    $group: {
+      _id: "$title",
+      averageRating: { $avg: "$reviews.rating" }
+    }
+  }
+]);
+
+Result:
+[
+    {
+        "_id": "Data Science with Python",
+        "averageRating": 4
+    },
+    {
+        "_id": "Introduction to MongoDB",
+        "averageRating": 4.5
+    }
+]
+
+Query 6: Retrieve all courses taught by the instructor "Jane Doe"
+JavaScript Query:
+online_learning.courses.aggregate([
+  {
+    $lookup: {
+      from: "instructors",
+      localField: "instructor",
+      foreignField: "_id",
+      as: "instructorDetails"
+    }
+  },
+  { $unwind: "$instructorDetails" },
+  { $match: { "instructorDetails.name": "Jane Doe" } },
+  { $project: { title: 1 } }
+]);
+
+Result:
+[
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b41"
+        },
+        "title": "Data Science with Python"
+    }
+]
+
+Query 7: Count the number of courses in each category
+JavaScript Query:
+online_learning.courses.aggregate([
+  {
+    $lookup: {
+      from: "categories",
+      localField: "category",
+      foreignField: "_id",
+      as: "categoryDetails"
+    }
+  },
+  { $unwind: "$categoryDetails" },
+  {
+    $group: {
+      _id: "$categoryDetails.name",
+      totalCourses: { $sum: 1 }
+    }
+  }
+]);
+
+Result:
+[
+    {
+        "_id": "Programming",
+        "totalCourses": 1
+    },
+    {
+        "_id": "Data Science",
+        "totalCourses": 1
+    }
+]
+
+Query 8: Find all students who have reviewed the course "Introduction to MongoDB"
+JavaScript Query:
+online_learning.courses.aggregate([
+  { $match: { title: "Introduction to MongoDB" } },
+  { $unwind: "$reviews" },
+  {
+    $lookup: {
+      from: "students",
+      localField: "reviews.student",
+      foreignField: "_id",
+      as: "reviewerDetails"
+    }
+  },
+  { $unwind: "$reviewerDetails" },
+  { $project: { "reviewerDetails.name": 1, "reviewerDetails.email": 1 } }
+]);
+
+Result:
+[
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "reviewerDetails": {
+            "name": "Alice Johnson",
+            "email": "alice.j@example.com"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "reviewerDetails": {
+            "name": "Bob Brown",
+            "email": "bob.b@example.com"
+        }
+    }
+]
+
+Query 9: Retrieve the titles of all courses where the average rating is above 4
+JavaScript Query:
+online_learning.courses.aggregate([
+  { $unwind: "$reviews" },
+  {
+    $group: {
+      _id: "$title",
+      averageRating: { $avg: "$reviews.rating" }
+    }
+  },
+  { $match: { averageRating: { $gt: 4 } } },
+  { $project: { _id: 0, title: "$_id" } }
+]);
+
+Result:
+[
+    {
+        "title": "Introduction to MongoDB"
+    }
+]
+
+Query 10: Retrieve all students who are enrolled in courses taught by "John Smith"
+JavaScript Query:
+online_learning.courses.aggregate([
+  {
+    $lookup: {
+      from: "instructors",
+      localField: "instructor",
+      foreignField: "_id",
+      as: "instructorDetails"
+    }
+  },
+  { $unwind: "$instructorDetails" },
+  { $match: { "instructorDetails.name": "John Smith" } },
+  {
+    $lookup: {
+      from: "students",
+      localField: "students",
+      foreignField: "_id",
+      as: "enrolledStudents"
+    }
+  },
+  { $project: { "enrolledStudents.name": 1, "enrolledStudents.email": 1 } }
+]);
+
+Result:
+[
+    {
+        "_id": {
+            "$oid": "673ea6a36c9d5fe6c6d07b40"
+        },
+        "enrolledStudents": [
+            {
+            "name": "Alice Johnson",
+            "email": "alice.j@example.com"
+            },
+            {
+            "name": "Bob Brown",
+            "email": "bob.b@example.com"
+            }
+        ]
+    }
+]
