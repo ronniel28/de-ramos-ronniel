@@ -1,15 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const todoRoutes = require('./routes/todoRoutes')
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.listen(port, ()=>{
-    console.log('server running');
-    connectToDatabase();
-    
-});
+
 
 const connectToDatabase = async () => {
     try {
@@ -19,3 +16,14 @@ const connectToDatabase = async () => {
         console.error('Error connecting to MongoDB:', error);
     }
 }
+
+
+
+//Routes
+app.use('/todos', todoRoutes);
+
+app.listen(port, ()=>{
+    console.log('server running');
+    connectToDatabase();
+    
+});
