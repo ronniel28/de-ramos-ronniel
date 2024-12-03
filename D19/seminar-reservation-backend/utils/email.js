@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();  // This must be called before accessing process.env
+
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({

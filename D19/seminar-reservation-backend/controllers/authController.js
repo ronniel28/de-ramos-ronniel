@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import sendEmail from '../utils/email.js';
 
 const register = async (req, res) => {
     try {
@@ -12,7 +13,17 @@ const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ firstName, lastName, email, password: hashedPassword });
 
-        res.status(201).json({ mnessage: 'User registered successfully', user });
+            const subject = 'Welcome to Our Platform';
+            const text= `Hi ${firstName}`;
+            const html = `<p>Thank you for registering with Schedly! 🎉 We're excited to help you connect with seminars and events that inspire learning and growth.</p>
+                   <p>🔎 Browse Upcoming Seminars: Explore a wide variety of topics and speakers.</p>
+                   <p>🗓️ Reserve Your Spot: Easily secure your seat for the seminars that interest you.</p>
+                   <p>📜 Manage Your Bookings: Keep track of your reservations in one place.</p>`;
+
+
+        await sendEmail(email, subject, text, html);
+
+        res.status(201).json({ message: 'User registered successfully', user });
 
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
