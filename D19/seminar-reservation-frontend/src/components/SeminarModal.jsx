@@ -71,17 +71,24 @@ const SeminarModal = ({ seminar, closeModal, updateSeminars }) => {
     
       const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('hello');
+        const token = localStorage.getItem("token");
+        console.log(token)
         const method = seminar ? "put" : "post";
         const url = seminar ? `${import.meta.env.VITE_API_URL}seminars/${seminar._id}` : `${import.meta.env.VITE_API_URL}seminars`;
     
         try {
-          const response = await axios[method](url, formData);
+          const response = await axios[method](url, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          });
+          console.log(response, 'response');
           if (seminar) {
             updateSeminars((prev) =>
               prev.map((s) => (s._id === response.data._id ? response.data : s))
             );
           } else {
+            console.log('hello');
             updateSeminars((prev) => [...prev, response.data]);
           }
           closeModal();
